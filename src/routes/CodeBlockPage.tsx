@@ -1,14 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from "../App";
-import { codeBlocks } from "../CodeBlocks";
+import { codeBlocks, codeBlocksSolutions } from "../CodeBlocks";
+import ReactCodeMirror from "@uiw/react-codemirror";
+import { vscodeDark } from "@uiw/codemirror-theme-vscode";
+import ImagePopup from "../components/ImagePopup";
 
 const CodeBlockPage = () => {
   const { codeId } = useParams<{ codeId: string }>();
 
   if (!codeId) return "No Code Id";
-  const [codeBlock, setCodeBlock] = useState(codeBlocks[parseInt(codeId) - 1]);
+  const index = parseInt(codeId) - 1;
+
+  const [codeBlock, setCodeBlock] = useState(codeBlocks[index]);
   const [isReadOnly, setReadOnly] = useState(false);
+  const [openPopup, setOpenPopup] = useState(false);
 
   useEffect(() => {
     socket.on("is_first", (isFirstEnter) => {
@@ -19,22 +25,31 @@ const CodeBlockPage = () => {
     });
   }, [socket]);
 
-  if (isReadOnly)
-    return (
-      <>
-        <h1>{codeBlock.title}</h1>
-        <h2>{codeBlock.code}</h2>
-      </>
-    );
+  function checkSolution(newCode: string) {
+    const clearNewCode = newCode.replace(/\s/g, "");
+    const solution = codeBlocksSolutions[index].code.replace(/\s/g, "");
+
+    return clearNewCode === solution;
+  }
+
+  const onChange = useCallback((newCode: string) => {
+    socket.emit("update_code", newCode);
+    if (checkSolution(newCode)) {
+      setOpenPopup(true);
+    }
+  }, []);
 
   return (
     <>
-      <h1>{codeBlock.title}</h1>
-      <textarea
-        onChange={(event) => socket.emit("update_code", event.target.value)}
-      >
-        {codeBlock.code}
-      </textarea>
+      <h2>{codeBlock.title}</h2>
+      <ReactCodeMirror
+        value={codeBlock.code}
+        editable={!isReadOnly}
+        onChange={onChange}
+        theme={vscodeDark}
+        style={{ textAlign: "left" }}
+      />
+      <ImagePopup open={openPopup} />
     </>
   );
 };
