@@ -1,52 +1,42 @@
 import { Link } from "react-router-dom";
 import { socket } from "../App";
 import { codeBlocks } from "../CodeBlocks";
+import {
+  Card,
+  CardHeader,
+  Container,
+  Heading,
+  Stack,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
 const LobbyPage = () => {
-  const notifyCodeEnter = (codeId: string) => {
+  const notifyCodeEnter = (codeId: number) => {
     socket.emit("code_enter", codeId);
   };
 
   return (
-    <div>
-      <h1>Choose code block:</h1>
-      <h2>
-        <Link
-          to={`/code/1`}
-          id="1"
-          onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
-        >
-          {codeBlocks[0].title}
-        </Link>
-      </h2>
-      <h2>
-        <Link
-          to={`/code/2`}
-          id="2"
-          onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
-        >
-          {codeBlocks[1].title}
-        </Link>
-      </h2>
-      <h2>
-        <Link
-          to={`/code/3`}
-          id="3"
-          onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
-        >
-          {codeBlocks[2].title}
-        </Link>
-      </h2>
-      <h2>
-        <Link
-          to={`/code/4`}
-          id="4"
-          onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
-        >
-          {codeBlocks[3].title}
-        </Link>
-      </h2>
-    </div>
+    <VStack>
+      <Stack alignItems="center" spacing="16px">
+        <Heading>Exercises</Heading>
+        <Text>Please choose one of the following exercises</Text>
+        <Stack>
+          {codeBlocks.map((codeBlock, index) => (
+            <Card variant="outline" key={index}>
+              <CardHeader>
+                <Link
+                  to={`/code/${index + 1}`}
+                  onClick={() => notifyCodeEnter(index + 1)}
+                >
+                  {codeBlock.title}
+                </Link>
+              </CardHeader>
+            </Card>
+          ))}
+        </Stack>
+      </Stack>
+    </VStack>
   );
 };
 
