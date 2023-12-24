@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { ChakraProvider, Container, Grid, GridItem } from "@chakra-ui/react";
+import { ChakraProvider, Grid, GridItem } from "@chakra-ui/react";
 import LobbyPage from "./routes/LobbyPage";
 import CodeBlockPage from "./routes/CodeBlockPage";
 import { connect } from "socket.io-client";
