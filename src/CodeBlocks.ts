@@ -1,4 +1,4 @@
-export const codeBlocks = [
+export const exercises = [
   {
     title: "Finding the Maximum in an Array",
     code: `function findMax(arr) {

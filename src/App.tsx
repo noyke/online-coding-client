@@ -14,7 +14,7 @@ function App() {
       element: <LobbyPage />,
     },
     {
-      path: "code/:codeId",
+      path: "exercise/:id",
       element: <CodeBlockPage />,
     },
   ]);

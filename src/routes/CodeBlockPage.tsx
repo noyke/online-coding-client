@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from "../App";
-import { codeBlocks } from "../CodeBlocks";
+import { exercises } from "../CodeBlocks";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import smiley from "../assets/smiley.png";
 
 const CodeBlockPage = () => {
-  const { codeId } = useParams<{ codeId: string }>();
+  const { id } = useParams<{ id: string }>();
 
-  if (!codeId) return "No Code Id";
+  if (!id) return "no exercise id";
 
-  const index = parseInt(codeId) - 1;
+  const index = parseInt(id) - 1;
 
-  const [code, setCode] = useState(codeBlocks[index].code);
+  const [code, setCode] = useState(exercises[index].code);
   const [isMentor, setIsMentor] = useState(false);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const CodeBlockPage = () => {
 
   function isCorrectSolution() {
     const codeWithoutSpaces = code.replace(/\s/g, "");
-    const solutionWithoutSpaces = codeBlocks[index].solution.replace(/\s/g, "");
+    const solutionWithoutSpaces = exercises[index].solution.replace(/\s/g, "");
 
     return codeWithoutSpaces === solutionWithoutSpaces;
   }
@@ -44,7 +44,7 @@ const CodeBlockPage = () => {
 
   return (
     <Stack>
-      <Heading>{codeBlocks[index].title}</Heading>
+      <Heading>{exercises[index].title}</Heading>
       <Text fontSize="lg">{WelcomeText}</Text>
       <Stack direction="row" height="400px">
         <ReactCodeMirror

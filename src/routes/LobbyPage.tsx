@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { socket } from "../App";
-import { codeBlocks } from "../CodeBlocks";
+import { exercises } from "../CodeBlocks";
 import {
   Card,
   CardHeader,
@@ -11,8 +11,8 @@ import {
 } from "@chakra-ui/react";
 
 const LobbyPage = () => {
-  const notifyCodeEnter = (codeId: number) => {
-    socket.emit("code_enter", codeId);
+  const notifyCodeEnter = (exerciseId: number) => {
+    socket.emit("code_enter", exerciseId);
   };
 
   return (
@@ -21,14 +21,14 @@ const LobbyPage = () => {
         <Heading>Exercises</Heading>
         <Text>Please choose one of the following exercises</Text>
         <Stack>
-          {codeBlocks.map((codeBlock, index) => (
+          {exercises.map((exercise, index) => (
             <Card variant="outline" key={index}>
               <CardHeader>
                 <Link
-                  to={`/code/${index + 1}`}
+                  to={`/exercise/${index + 1}`}
                   onClick={() => notifyCodeEnter(index + 1)}
                 >
-                  {codeBlock.title}
+                  {exercise.title}
                 </Link>
               </CardHeader>
             </Card>
