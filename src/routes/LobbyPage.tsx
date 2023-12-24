@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
 import { socket } from "../App";
+import { codeBlocks } from "../CodeBlocks";
 
 const LobbyPage = () => {
   const notifyCodeEnter = (codeId: string) => {
     socket.emit("code_enter", codeId);
   };
+
   return (
     <div>
       <h1>Choose code block:</h1>
@@ -14,7 +16,7 @@ const LobbyPage = () => {
           id="1"
           onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
         >
-          Code 1
+          {codeBlocks[0].title}
         </Link>
       </h2>
       <h2>
@@ -23,7 +25,7 @@ const LobbyPage = () => {
           id="2"
           onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
         >
-          Code 2
+          {codeBlocks[1].title}
         </Link>
       </h2>
       <h2>
@@ -32,7 +34,7 @@ const LobbyPage = () => {
           id="3"
           onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
         >
-          Code 3
+          {codeBlocks[2].title}
         </Link>
       </h2>
       <h2>
@@ -41,7 +43,7 @@ const LobbyPage = () => {
           id="4"
           onClick={(event) => notifyCodeEnter(event.currentTarget.id)}
         >
-          Code 4
+          {codeBlocks[3].title}
         </Link>
       </h2>
     </div>
