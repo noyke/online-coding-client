@@ -18,12 +18,21 @@ const CodeBlockPage = () => {
   const [isMentor, setIsMentor] = useState(false);
 
   useEffect(() => {
-    socket.on("is_first", (isFirstEnter) => {
+    function handleFirst(isFirstEnter: boolean) {
       setIsMentor(isFirstEnter);
-    });
-    socket.on("updated_code", (newCode) => {
+    }
+    function handleCodeUpdated(newCode: string) {
       setCode(newCode);
-    });
+    }
+    socket.emit("code_entered", id);
+    socket.on("is_first", handleFirst);
+    socket.on("updated_code", handleCodeUpdated);
+
+    return () => {
+      socket.emit("code_exit", id);
+      socket.off("is_first", handleFirst);
+      socket.off("updated_code", handleCodeUpdated);
+    };
   }, [socket]);
 
   function isCorrectSolution() {
@@ -35,7 +44,7 @@ const CodeBlockPage = () => {
 
   const onChange = (newCode: string) => {
     setCode(newCode);
-    socket.emit("update_code", newCode);
+    socket.emit("update_code", { newCode, id });
   };
 
   const WelcomeText = isMentor
