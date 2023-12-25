@@ -31,14 +31,14 @@ const CodeBlockPage = ({ exercises }: Props) => {
     function handleCodeUpdated(newCode: string) {
       setCode(newCode);
     }
-    socket.emit("code_entered", id);
+    socket.emit("user_entered_exercise", id);
     socket.on("is_first", handleFirst);
-    socket.on("updated_code", handleCodeUpdated);
+    socket.on("code_updated", handleCodeUpdated);
 
     return () => {
-      socket.emit("code_exit");
+      socket.emit("user_exited_exercise");
       socket.off("is_first", handleFirst);
-      socket.off("updated_code", handleCodeUpdated);
+      socket.off("code_updated", handleCodeUpdated);
     };
   }, [socket]);
 
@@ -51,7 +51,7 @@ const CodeBlockPage = ({ exercises }: Props) => {
 
   const onChange = (newCode: string) => {
     setCode(newCode);
-    socket.emit("update_code", { newCode, id });
+    socket.emit("code_updated", { newCode, id });
   };
 
   const WelcomeText = isMentor
