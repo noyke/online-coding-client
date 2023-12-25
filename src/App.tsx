@@ -8,14 +8,16 @@ import { useEffect, useState } from "react";
 import { IExercise } from "./types/exercise";
 import Loader from "./components/Loader";
 
-export const socket = connect("http://localhost:3001");
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
+
+export const socket = connect(SERVER_URL);
 
 function App() {
   const [exercises, setExercises] = useState<IExercise[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    fetch("http://localhost:3001/exercises")
+    fetch(SERVER_URL + "/exercises")
       .then((response) => response.json())
       .then((data) => {
         setExercises(data);
