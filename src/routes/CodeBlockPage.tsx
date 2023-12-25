@@ -33,7 +33,7 @@ const CodeBlockPage = ({ exercises }: Props) => {
     socket.on("updated_code", handleCodeUpdated);
 
     return () => {
-      socket.emit("code_exit", id);
+      socket.emit("code_exit");
       socket.off("is_first", handleFirst);
       socket.off("updated_code", handleCodeUpdated);
     };
