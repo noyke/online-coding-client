@@ -1,12 +1,14 @@
+import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider, Grid, GridItem } from "@chakra-ui/react";
-import LobbyPage from "./routes/LobbyPage";
-import CodeBlockPage from "./routes/CodeBlockPage";
 import { connect } from "socket.io-client";
+
+import CodeBlockPage from "./routes/CodeBlockPage";
+import LobbyPage from "./routes/LobbyPage";
 import Header from "./components/Header";
-import { useEffect, useState } from "react";
-import { IExercise } from "./types/exercise";
 import Loader from "./components/Loader";
+import { IExercise } from "./types/exercise";
+import theme from "./theme";
 
 const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
@@ -37,7 +39,7 @@ function App() {
   ]);
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Grid templateAreas={`"header" "main"`}>
         <GridItem bg="orange" area={"header"}>
           <Header />
