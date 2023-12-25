@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import { socket } from "../App";
-import { exercises } from "../CodeBlocks";
 import {
   Card,
   CardHeader,
@@ -10,11 +8,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-const LobbyPage = () => {
-  const notifyCodeEnter = (exerciseId: number) => {
-    socket.emit("code_enter", exerciseId);
-  };
+interface Props {
+  exercises: { title: string; code: string; solution: string }[];
+}
 
+const LobbyPage = ({ exercises }: Props) => {
   return (
     <VStack>
       <Stack alignItems="center" spacing="16px">
@@ -24,12 +22,7 @@ const LobbyPage = () => {
           {exercises.map((exercise, index) => (
             <Card variant="outline" key={index}>
               <CardHeader>
-                <Link
-                  to={`/exercise/${index + 1}`}
-                  onClick={() => notifyCodeEnter(index + 1)}
-                >
-                  {exercise.title}
-                </Link>
+                <Link to={`/exercise/${index + 1}`}>{exercise.title}</Link>
               </CardHeader>
             </Card>
           ))}

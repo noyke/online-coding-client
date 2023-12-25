@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from "../App";
-import { exercises } from "../CodeBlocks";
+//import { exercises } from "../CodeBlocks";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import smiley from "../assets/smiley.png";
 
-const CodeBlockPage = () => {
+interface Props {
+  exercises: { title: string; code: string; solution: string }[];
+}
+
+const CodeBlockPage = ({ exercises }: Props) => {
   const { id } = useParams<{ id: string }>();
 
   if (!id) return "no exercise id";
