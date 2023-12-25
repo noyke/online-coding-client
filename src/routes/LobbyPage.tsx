@@ -7,9 +7,10 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { IExercise } from "../types/exercise";
 
 interface Props {
-  exercises: { title: string; code: string; solution: string }[];
+  exercises: IExercise[];
 }
 
 const LobbyPage = ({ exercises }: Props) => {

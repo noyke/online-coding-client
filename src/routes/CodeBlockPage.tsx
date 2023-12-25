@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { socket } from "../App";
-//import { exercises } from "../CodeBlocks";
 import ReactCodeMirror from "@uiw/react-codemirror";
 import { vscodeDark } from "@uiw/codemirror-theme-vscode";
 import { Flex, Heading, Image, Stack, Text } from "@chakra-ui/react";
 import smiley from "../assets/smiley.png";
+import { IExercise } from "../types/exercise";
+import Loader from "../components/Loader";
 
 interface Props {
-  exercises: { title: string; code: string; solution: string }[];
+  exercises: IExercise[];
 }
 
 const CodeBlockPage = ({ exercises }: Props) => {
@@ -20,10 +21,12 @@ const CodeBlockPage = ({ exercises }: Props) => {
 
   const [code, setCode] = useState(exercises[index].code);
   const [isMentor, setIsMentor] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     function handleFirst(isFirstEnter: boolean) {
       setIsMentor(isFirstEnter);
+      setLoading(false);
     }
     function handleCodeUpdated(newCode: string) {
       setCode(newCode);
@@ -55,7 +58,9 @@ const CodeBlockPage = ({ exercises }: Props) => {
     ? "Hello Mentor! Take a moment to review and provide feedback on the submitted code."
     : "Hello Student! It's your turn to shine. Dive in, edit the code, and tackle the exercise";
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <Stack>
       <Heading>{exercises[index].title}</Heading>
       <Text fontSize="lg">{WelcomeText}</Text>
